@@ -7,15 +7,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from openpyxl import load_workbook
 
 # Load the Excel file
-wb = load_workbook("parts.xlsx")
+wb = load_workbook("testdata.xlsx")
 sheet = wb.active
 
 # Set up the Selenium WebDriver (make sure you have the appropriate driver installed)
 driver = webdriver.Chrome()  # You can use a different driver if needed
 
 # Iterate through rows in the Excel file
-for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=1, max_col=2):
-    part_name = row[0].value
+for row in sheet.iter_rows(
+    min_row=2, max_row=sheet.max_row, min_col=1, max_col=sheet.max_column
+):
+    part_name = row[3].value + " digikey"
     if part_name:
         # Perform Google search
         driver.get("https://www.google.com")
@@ -44,7 +46,7 @@ for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=1, max_col=
 wb.save("parts_updated.xlsx")
 
 # Close the browser
-driver.quit()
+# driver.quit()
 
 print("Process completed. Results saved in 'parts_updated.xlsx'")
 # using selenium, access an excel file and google search the part names in it and save the first link to the excel
